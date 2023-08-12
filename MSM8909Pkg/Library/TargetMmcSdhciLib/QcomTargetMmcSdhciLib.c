@@ -25,8 +25,10 @@ VOID LibQcomTargetMmcSdhciInit(INIT_SLOT_CB InitSlot)
     uint8_t dat;
     struct mmc_config_data config = {0};
 
-#ifndef FORCE_SDCARD
+
   /* Try slot 1 */
+  config.bus_width     = DATA_BUS_WIDTH_8BIT;
+  config.max_clk_rate  = MMC_CLK_177MHZ;
   config.slot          = 1;
   config.sdhc_base     = mmc_sdhci_base[config.slot - 1];
   config.pwrctl_base   = mmc_pwrctl_base[config.slot - 1];
@@ -60,7 +62,6 @@ VOID LibQcomTargetMmcSdhciInit(INIT_SLOT_CB InitSlot)
   if (InitSlot(&config) == NULL) {
     DEBUG((DEBUG_ERROR, "Can't initialize mmc slot %u\n", config.slot));
   }
-#endif
 
   DEBUG((EFI_D_LOAD, "Initializing mmc_slot %u\n", 2));
   config.bus_width     = DATA_BUS_WIDTH_4BIT;
