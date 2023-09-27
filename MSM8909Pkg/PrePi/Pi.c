@@ -35,6 +35,10 @@ STATIC VOID UartInit(VOID)
     base[i] = 0;
   }
 
+  // Set BGR Format
+  MmioWrite32(0x1A90000, 0x418213F);
+  // Set stride
+  MmioWrite32(0x1A9000C, 4 * PcdGet32(PcdMipiFrameBufferWidth));
   /* Move from old FB to the Windows Mobile platform one, so it fits with the UEFIplat */
   MmioWrite32(0x1A90008,0x80400000);
 

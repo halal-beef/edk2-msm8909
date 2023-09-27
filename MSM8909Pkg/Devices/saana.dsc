@@ -24,4 +24,3 @@
   gMSM8909PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|720
   gMSM8909PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|1280
   gMSM8909PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32
-  gMSM8909PkgTokenSpaceGuid.IsAndroidPlatform|FALSE
