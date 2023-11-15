@@ -7,7 +7,7 @@
 #include <Platform/iomap.h>
 #include <Platform/irqs.h>
 
-#define FORCE_SDCARD := 1
+//#define FORCE_SDCARD := 1
 static uint32_t mmc_pwrctl_base[] =
 	{ MSM_SDC1_BASE, MSM_SDC2_BASE };
 
@@ -98,6 +98,6 @@ VOID LibQcomTargetMmcSdhciInit(INIT_SLOT_CB InitSlot)
     // Init SD card slot
     if (InitSlot(&config) == NULL) {
         DEBUG((DEBUG_ERROR, "Can't initialize mmc slot %u\n", config.slot));
-		ASSERT_EFI_ERROR("Hanging here, sdcard failed to initialize");
+		//ASSERT_EFI_ERROR("Hanging here, sdcard failed to initialize");
     }
 }

@@ -6,6 +6,7 @@
 #include <Library/KeypadDeviceImplLib.h>
 #include <Library/KeypadDeviceHelperLib.h>
 #include <Protocol/KeypadDevice.h>
+#include <Platform/iomap.h>
 
 typedef enum {
   KEY_DEVICE_TYPE_UNKNOWN,
@@ -85,21 +86,23 @@ KeypadDeviceImplConstructor (
   // Vol Up (115) , Camera Splash (766) and Camera Focus (528)
   // go through TLMM GPIO
   StaticContext = KeypadKeyCodeToKeyContext(115);
-  StaticContext->DeviceType = KEY_DEVICE_TYPE_PM8X41;
+  StaticContext->DeviceType = KEY_DEVICE_TYPE_TLMM;
   StaticContext->Gpio = 90;
-  StaticContext->ActiveLow = 0x0 & 0x0;
-  StaticContext->IsValid = FALSE;
+  StaticContext->ActiveLow = 0x0 & 0x1;
+  StaticContext->IsValid = TRUE;
 
   // Vol Down (114) and Power On (116) on through PMIC PON
   StaticContext = KeypadKeyCodeToKeyContext(114);
-  StaticContext->DeviceType = KEY_DEVICE_TYPE_PM8X41_PON;
-  StaticContext->PonType = 1;
-  StaticContext->IsValid = FALSE;
+  StaticContext->DeviceType = KEY_DEVICE_TYPE_TLMM;
+  StaticContext->Gpio = 91;
+  StaticContext->ActiveLow = 0x1 & 0x1;
+  StaticContext->IsValid = TRUE;
 
-  StaticContext = KeypadKeyCodeToKeyContext(116);
-  StaticContext->DeviceType = KEY_DEVICE_TYPE_PM8X41_PON;
-  StaticContext->PonType = 0;
-  StaticContext->IsValid = FALSE;
+  //Disable for now, since it hangs everything
+  //StaticContext = KeypadKeyCodeToKeyContext(116);
+  //StaticContext->DeviceType = KEY_DEVICE_TYPE_PM8X41_PON;
+  //StaticContext->PonType = 1;
+  //StaticContext->IsValid = FALSE;
 
   return RETURN_SUCCESS;
 }
@@ -125,8 +128,8 @@ EFI_STATUS KeypadDeviceImplGetKeys (KEYPAD_DEVICE_PROTOCOL *This, KEYPAD_RETURN_
   INTN     RC;
   UINTN    Index;
 
-  for (Index=0; Index<ARRAY_SIZE(KeyList); Index++) {
-    KEY_CONTEXT_PRIVATE *Context = KeyList[Index];
+    for (Index = 0; Index < (sizeof(KeyList) / sizeof(KeyList[0])); Index++) {
+        KEY_CONTEXT_PRIVATE *Context = KeyList[Index];
 
     // check if this is a valid key
     if (Context->IsValid == FALSE)
